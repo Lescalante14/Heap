@@ -29,6 +29,7 @@ int main(){
 
    size_t cantidad=heap_cantidad(heap);
    for(size_t i=0; i<cantidad; i++)
-     printf("%i-",*(int*)(heap_extraer_raiz(heap)));
+      printf("%i-",*(int*)(heap_extraer_raiz(heap)));
+   heap_destruir(heap);
    return 0;
 }
