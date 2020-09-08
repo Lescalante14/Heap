@@ -18,17 +18,17 @@ int main(){
    int n6=6;
    int n7=7;
    int n8=8;
-   heap_insertar(heap, n8);
-   heap_insertar(heap, n6);
-   heap_insertar(heap, n3);
-   heap_insertar(heap, n2);
-   heap_insertar(heap, n1);
-   heap_insertar(heap, n7);
-   heap_insertar(heap, n4);
-   heap_insertar(heap, n5);
+   heap_insertar(heap, &n8);
+   heap_insertar(heap, &n6);
+   heap_insertar(heap, &n3);
+   heap_insertar(heap, &n2);
+   heap_insertar(heap, &n1);
+   heap_insertar(heap, &n7);
+   heap_insertar(heap, &n4);
+   heap_insertar(heap, &n5);
 
-   int cantidad=heap_cantidad(heap);
-   for(int i=0; i<cantidad; i++)
+   size_t cantidad=heap_cantidad(heap);
+   for(size_t i=0; i<cantidad; i++)
      printf("%i-",*(int*)(heap_extraer_raiz(heap)));
    return 0;
 }

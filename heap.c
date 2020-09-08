@@ -13,20 +13,20 @@ struct heap{
 
 ////////////// Func AUX /////////
 
-int posicion_padre(int indice){
+size_t posicion_padre(size_t indice){
    return (indice-1)/2;
 }
 
-void swap(void** vector, int p1,int p2){
+void swap(void** vector, size_t p1, size_t p2){
    void* aux =vector[p1];
    vector[p1]=vector[p2];
    vector[p2]=aux;
 }
 
-void sift_up(heap_t* heap, int indice){
-   if(indice<=0)
+void sift_up(heap_t* heap, size_t indice){
+   if(indice==0)
       return;
-   int pos_padre=posicion_padre(indice);
+   size_t pos_padre=posicion_padre(indice);
    if(heap->es_minimal && heap->comparador(heap->vector[indice],heap->vector[pos_padre])<0){
       swap(heap->vector, indice, pos_padre);
       sift_up(heap, pos_padre);
@@ -36,11 +36,11 @@ void sift_up(heap_t* heap, int indice){
    }
 }
 
-int posicion_hijo_izquierdo(int indice){
+size_t posicion_hijo_izquierdo(size_t indice){
    return 2*indice+1;
 }
 
-int busca_indice_candidato(heap_t* heap, int p1, int p2){
+size_t busca_indice_candidato(heap_t* heap, size_t p1, size_t p2){
    if(heap->es_minimal){
       if(heap->comparador(heap->vector[p1], heap->vector[p2]) < 0)
          return p1;
@@ -52,12 +52,12 @@ int busca_indice_candidato(heap_t* heap, int p1, int p2){
    }
 }
 
-void sift_down(heap_t* heap, int indice){
+void sift_down(heap_t* heap, size_t indice){
 
-   int p_hijo_izq=posicion_hijo_izquierdo(indice);
-   int p_hijo_der = p_hijo_izq+1;
+   size_t p_hijo_izq=posicion_hijo_izquierdo(indice);
+   size_t p_hijo_der = p_hijo_izq+1;
    if(p_hijo_izq<heap->cantidad){
-      int indice_candidato=p_hijo_izq;
+      size_t indice_candidato=p_hijo_izq;
       if(p_hijo_der<heap->cantidad){
          indice_candidato=busca_indice_candidato(heap,p_hijo_izq, p_hijo_der);
       }
@@ -105,9 +105,12 @@ int heap_insertar(heap_t* heap, void* elemento){
 void* heap_extraer_raiz(heap_t* heap){
    if(!heap)
       return NULL;
-   void* raiz=heap->vector[0];
-   swap(heap->vector, 0, (heap->cantidad)-1);
-   sift_down(heap, 0);
+   void *raiz =NULL;
+   if(heap_cantidad(heap) > 0){
+      raiz=heap->vector[0];
+      swap(heap->vector, 0, (heap->cantidad)-1);
+      sift_down(heap, 0);
+   }
    return raiz;
 }
 
