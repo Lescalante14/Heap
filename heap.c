@@ -24,7 +24,8 @@ void swap(void** vector, int p1,int p2){
 }
 
 void sift_up(heap_t* heap, int indice){
-
+   if(indice<=0)
+      return;
    int pos_padre=posicion_padre(indice);
    if(heap->es_minimal && heap->comparador(heap->vector[indice],heap->vector[pos_padre])<0){
       swap(heap->vector, indice, pos_padre);
@@ -32,6 +33,41 @@ void sift_up(heap_t* heap, int indice){
    }else if(!heap->es_minimal && heap->comparador(heap->vector[indice], heap->vector[pos_padre]) > 0){
       swap(heap->vector, indice, pos_padre);
       sift_up(heap, pos_padre);
+   }
+}
+
+int posicion_hijo_izquierdo(int indice){
+   return 2*indice+1;
+}
+
+int busca_indice_candidato(heap_t* heap, int p1, int p2){
+   if(heap->es_minimal){
+      if(heap->comparador(heap->vector[p1], heap->vector[p2]) < 0)
+         return p1;
+      return p2;
+   }else{
+      if(heap->comparador(heap->vector[p1], heap->vector[p2]) > 0)
+         return p1;
+      return p2;
+   }
+}
+
+void sift_down(heap_t* heap, int indice){
+
+   int p_hijo_izq=posicion_hijo_izquierdo(indice);
+   int p_hijo_der = p_hijo_izq+1;
+   if(p_hijo_izq<heap->cantidad){
+      int indice_candidato=p_hijo_izq;
+      if(p_hijo_der<heap->cantidad){
+         indice_candidato=busca_indice_candidato(heap,p_hijo_izq, p_hijo_der);
+      }
+      if(heap->es_minimal && heap->comparador(heap->vector[indice_candidato], heap->vector[indice]) < 0){
+         swap(heap->vector, indice_candidato, indice);
+         sift_down(heap, indice_candidato);
+      }else if(!heap->es_minimal && heap->comparador(heap->vector[indice_candidato], heap->vector[indice]) > 0){
+         swap(heap->vector, indice_candidato, indice);
+         sift_down(heap, indice_candidato);
+      }
    }
 }
 
@@ -66,7 +102,14 @@ int heap_insertar(heap_t* heap, void* elemento){
    return EXITO;
 }
 
-void* heap_extraer_raiz(heap_t* heap);
+void* heap_extraer_raiz(heap_t* heap){
+   if(!heap)
+      return NULL;
+   void* raiz=heap->vector[0];
+   swap(heap->vector, 0, (heap->cantidad)-1);
+   sift_down(heap, 0);
+   return raiz;
+}
 
 size_t heap_cantidad(heap_t* heap){
    return heap? heap->cantidad : 0;
