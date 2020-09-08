@@ -8,12 +8,13 @@
 #define MINIMAL 1
 #define MAXIMAL 2
 
+
 typedef int (*comparador_t)(void*, void*);
 typedef struct heap heap_t;
 
-heap_t* heap_crear(comparador_t comparador);
+heap_t* heap_crear(comparador_t comparador, int tipo_heap);
 
-int heap_agregar(heap_t* heap, void* elemento);
+int heap_insertar(heap_t* heap, void* elemento);
 
 void* heap_extraer_raiz(heap_t* heap);
 
