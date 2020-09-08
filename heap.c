@@ -115,4 +115,9 @@ size_t heap_cantidad(heap_t* heap){
    return heap? heap->cantidad : 0;
 }
 
-void heap_destruir(heap_t *heap);
+void heap_destruir(heap_t *heap){
+   if(!heap)
+      return;
+   free(heap->vector);
+   free(heap);
+}
