@@ -74,7 +74,9 @@ void sift_down(heap_t* heap, size_t indice){
 ///////////// PRINCIPALES //////////////////
 
 heap_t* heap_crear(comparador_t comparador, int tipo_heap){
-   heap_t* heap=calloc(1,sizeof(heap_t));
+   if(!comparador || !(tipo_heap == MINIMAL || tipo_heap == MAXIMAL))
+      return NULL;
+   heap_t *heap = calloc(1, sizeof(heap_t));
    if(!heap)
       return NULL;
    heap->vector=calloc(1,sizeof(void*));
