@@ -13,21 +13,29 @@ struct heap{
 };
 
 ////////////// Func AUX /////////
-
-size_t posicion_padre(size_t indice){
-   return (indice-1)/2;
+/* 
+ * Retorna el indice del padre del nodo en indice_hijo
+ */
+size_t indice_padre(size_t indice_hijo){
+   return (indice_hijo-1)/2;
 }
 
+/* 
+ * Swapea las posiciones p1 y p2 del vector
+ */
 void swap(void** vector, size_t p1, size_t p2){
    void* aux =vector[p1];
    vector[p1]=vector[p2];
    vector[p2]=aux;
 }
 
+/* 
+ * Sube el nodo en la posicion indice hasta que cumpla la condicion de heap
+ */
 void sift_up(heap_t* heap, size_t indice){
    if(indice==0)
       return;
-   size_t pos_padre=posicion_padre(indice);
+   size_t pos_padre=indice_padre(indice);
    if(heap->es_minimal && heap->comparador(heap->vector[indice],heap->vector[pos_padre])<0){
       swap(heap->vector, indice, pos_padre);
       sift_up(heap, pos_padre);
@@ -37,25 +45,35 @@ void sift_up(heap_t* heap, size_t indice){
    }
 }
 
-size_t posicion_hijo_izquierdo(size_t indice){
-   return 2*indice+1;
+/* 
+ * Retorna el indice del hijo izquierdo del nodo del indice padre
+ */
+size_t indice_hijo_izquierdo(size_t indice_padre){
+   return 2*indice_padre+1;
 }
 
-size_t busca_indice_candidato(heap_t* heap, size_t p1, size_t p2){
+/* 
+ * Retorna: -El indice del hijo MAYOR si es un heap MAXIMAL
+ *          -El indice del hijo MENOR si es un heap MINIMAL 
+ */
+size_t busca_indice_candidato(heap_t* heap, size_t ind_hijo1, size_t ind_hijo2){
    if(heap->es_minimal){
-      if(heap->comparador(heap->vector[p1], heap->vector[p2]) < 0)
-         return p1;
-      return p2;
+      if(heap->comparador(heap->vector[ind_hijo1], heap->vector[ind_hijo2]) < 0)
+         return ind_hijo1;
+      return ind_hijo2;
    }else{
-      if(heap->comparador(heap->vector[p1], heap->vector[p2]) > 0)
-         return p1;
-      return p2;
+      if(heap->comparador(heap->vector[ind_hijo1], heap->vector[ind_hijo2]) > 0)
+         return ind_hijo1;
+      return ind_hijo2;
    }
 }
 
+/* 
+ * Baja el nodo en la posicion indice hasta que cumpla la condicion de heap
+ */
 void sift_down(heap_t* heap, size_t indice){
 
-   size_t p_hijo_izq=posicion_hijo_izquierdo(indice);
+   size_t p_hijo_izq=indice_hijo_izquierdo(indice);
    size_t p_hijo_der = p_hijo_izq+1;
    if(p_hijo_izq<heap->cantidad){
       size_t indice_candidato=p_hijo_izq;

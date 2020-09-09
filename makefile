@@ -10,4 +10,4 @@ valgrind:
 .PHONY : clean
 
 clean:
-	rm hash
+	rm heap

@@ -10,6 +10,11 @@ void destruye_numero(void* elemento){
    free(elemento);
 }
    
+/* 
+ * Crea un heap minimal - inserta 8 valores desordenados - recorre el heap
+ * mostrando y extrayendo la raiz.
+ * Resultado esperado: Que imprima los valores por pantalla en forma creciente
+ */
 void probar_heap_elementos_estaticos(){
    heap_t *heap = heap_crear(compara_numeros, NULL, MINIMAL);
    if(!heap)
@@ -41,6 +46,10 @@ void probar_heap_elementos_estaticos(){
    printf("\n");
 }   
 
+/* 
+ * Reserva memoria para un int y la inicializa con el valor enviado
+ * Retorna la referencia de ese espacio de memoria
+ */
 int* crear_numero(int valor){
    int* numero=malloc(sizeof(int));
    if(numero)
@@ -48,6 +57,11 @@ int* crear_numero(int valor){
    return numero;
 }
 
+/* 
+ * Crea un heap maximal - inserta 8 valores en forma creciente - recorre el heap
+ * mostrando y extrayendo la raiz.
+ * Resultado esperado: Que imprima los valores por pantalla en forma decreciente
+ */
 void probar_heap_elementos_dinamicos(){
 
    heap_t* heap = heap_crear(compara_numeros, destruye_numero, MAXIMAL);
