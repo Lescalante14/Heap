@@ -9,6 +9,7 @@ struct heap{
    size_t capacidad;
    bool es_minimal;
    comparador_t comparador;
+   destructor_t destructor;
 };
 
 ////////////// Func AUX /////////
@@ -73,7 +74,7 @@ void sift_down(heap_t* heap, size_t indice){
 
 ///////////// PRINCIPALES //////////////////
 
-heap_t* heap_crear(comparador_t comparador, int tipo_heap){
+heap_t *heap_crear(comparador_t comparador, destructor_t destructor, int tipo_heap){
    if(!comparador || !(tipo_heap == MINIMAL || tipo_heap == MAXIMAL))
       return NULL;
    heap_t *heap = calloc(1, sizeof(heap_t));
@@ -88,6 +89,7 @@ heap_t* heap_crear(comparador_t comparador, int tipo_heap){
       heap->es_minimal=true;
    heap->capacidad=1;
    heap->comparador=comparador;
+   heap->destructor=destructor;
    return heap;
 }
 
@@ -108,17 +110,21 @@ int heap_insertar(heap_t* heap, void* elemento){
    return EXITO;
 }
 
-void* heap_extraer_raiz(heap_t* heap){
+void* heap_raiz(heap_t* heap){
+   return heap? heap->vector[0] : NULL;
+}
+
+int heap_extraer_raiz(heap_t* heap){
    if(!heap)
-      return NULL;
-   void *raiz =NULL;
+      return ERROR;
    if(heap_cantidad(heap) > 0){
-      raiz=heap->vector[0];
       swap(heap->vector, 0, (heap->cantidad)-1);
+      if(heap->destructor)
+         heap->destructor(heap->vector[heap->cantidad-1]);
       (heap->cantidad)--;
       sift_down(heap, 0);
    }
-   return raiz;
+   return EXITO;
 }
 
 size_t heap_cantidad(heap_t* heap){

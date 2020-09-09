@@ -8,7 +8,7 @@ int compara_numeros(void* _n1, void* _n2){
 
 int main(){
    
-   heap_t* heap=heap_crear(compara_numeros, MINIMAL);
+   heap_t* heap=heap_crear(compara_numeros, NULL, MINIMAL);
 
    int n1=1;
    int n2=2;

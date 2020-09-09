@@ -14,13 +14,18 @@
  */
 typedef int (*comparador_t)(void*, void*);
 
+/* 
+ * Libera la memoria reservada del elemento almacenado
+ */
+typedef void (*destructor_t)(void*);
+
 typedef struct heap heap_t;
 
 /* 
  * Crea e inicializa un heap en memoria dinamica 
  * El tipo de heap esta dada por las constantes MINIMAL Y MAXIMAL en este .h
  */
-heap_t* heap_crear(comparador_t comparador, int tipo_heap);
+heap_t* heap_crear(comparador_t comparador, destructor_t destructor, int tipo_heap);
 
 /* 
  * Inserta un elemento no NULO al heap
@@ -29,9 +34,15 @@ heap_t* heap_crear(comparador_t comparador, int tipo_heap);
 int heap_insertar(heap_t* heap, void* elemento);
 
 /* 
- * Extrae y devuelve la raiz del heap (el menor o mayor segun sea el tipo)
+ * Devuelve la raiz del heap (el menor o mayor segun sea el tipo)
  */
-void* heap_extraer_raiz(heap_t* heap);
+void* heap_raiz(heap_t* heap);
+
+/* 
+ * Extrae(remueve) la raiz del heap (el menor o mayor segun sea el tipo)
+ * Retorno: 0 Si se remueve bien, -1 si algo falla
+ */
+int heap_extraer_raiz(heap_t* heap);
 
 /* 
  * Devuelve la cantidad de elementos almacenados en el heap
